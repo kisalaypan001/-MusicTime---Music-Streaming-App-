@@ -8,8 +8,8 @@
 ## 👨‍💻 Author:
 
 **Kisalay Pan**  
-Roll No: 22f2001094  
-📧 Email: [22f2001094@ds.study.iitm.ac.in](mailto:22f2001094@ds.study.iitm.ac.in)
+ 
+📧 Email: [kisalay.pan003@gmail.com](mailto:kisalay.pan003@gmail.com)
 
 ---
 
