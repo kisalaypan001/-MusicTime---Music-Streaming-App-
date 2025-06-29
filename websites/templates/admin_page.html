@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Ratings Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Welcome to MusicTime</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #header img {
+            margin-right: 10px;
+        }
+        #search-box {
+            flex: 1;
+            align-items: center;
+            margin-left: 100px;
+            text-align: center;
+        }
+
+        #search-box input {
+            padding: 8px;
+            width: 40%;
+            align-items: center;
+            border: none;
+            border-radius: 5px;
+        }
+        #welcome-message {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #playlist-links {
+            margin-left: 20px;
+        }
+
+        #playlist-links a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+        #admin-dashboard {
+            display:flex;
+            align-content: center;
+            align-items:start;
+            width: 100%;
+            align-self: center;
+        }
+        #creator-dashboard {
+            display:block;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px;
+            padding: 20px;
+            background-color: rgb(214, 206, 206);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            align-content: center;
+            text-align: center;
+            width: 45%;
+        }
+
+        #dashboard-links {
+            align-content: center;
+            align-items: center;
+        }
+        #dashboard-title{
+            text-align: center;
+            margin: 20px 0;
+        }
+        #dashboard-links a {
+            margin-left: 20px;
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+
+        #dashboard-stats {
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            margin: 20px;
+            display: inline-block;
+            border: 1px solid #333;
+            border-radius: 10px;
+        }
+        #songs-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .songs-list {
+            flex: 1;
+        }
+
+        .songs-list h3 {
+            color: #333;
+        }
+
+        .songs-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .songs-list li {
+            margin-bottom: 10px;
+        }
+
+        #search-button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logout-links {
+            display: flex;
+            margin: 5px;
+        }
+
+        #logout-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+        
+        .song-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            width: 92%;
+            align-content: center;
+            margin: auto    ;
+            border-radius: 20PX;
+        }
+
+        /* Style for each individual block */
+        .song-block {
+            width: 95%; 
+            border: 1px solid #ddd;
+            padding: 40px;
+            margin: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #ddd;
+            border-radius: 10PX;
+        }
+
+        /* Additional styling for the song details */
+        .song-details {
+            font-weight: bold;
+            font-size: larger;
+        }
+        #Artist {
+            font-weight: bold;
+            font-size: medium;
+        }
+
+        #play-links {
+            display: flex;
+            text-align: center;
+            margin: 10px;
+            margin-bottom: 5px;
+        }
+
+        #play-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: #333;
+        }
+        #songs {
+            display:block;
+            text-align: right;
+            margin: 10px;
+            margin-bottom: 5px;
+        }
+
+        #songs a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <h1>
+        <img src="static\music-icon.png" alt="Music Icon" width="50" height="50">
+        <span>MusicTime</span>
+    </h1>
+    <div id="logout-links">
+    <a href="/logout">Log Out</a>
+    </div>
+</div>
+
+<div id="welcome-message">
+    <h2>
+        Welcome to <img src="static\music-icon.png" alt="Music Icon" width="30" height="30"> MusicTime Admin dashboard.
+        Check all statistics here.
+    </h2>
+    <div id="playlist-links">
+        <a href="/creators"> View all Creators</a>
+        <a href="/albums_page"> View all Albums</a>
+        <a href="/songs_page">View all Songs!</a>
+    </div>
+</div>
+<div id="admin-dashboard">
+    <!--Creators stats-->
+<div id="creator-dashboard">
+    <h2>
+    <div id="dashboard-title">
+        <img src="static\creator_logo.png" alt="Music Icon" width="50" height="50"> Creator's Details
+    </div>
+    </h2>
+    <div id="playlist-links">
+        <a href="/creators">View all Creators</a>
+    </div>
+    <div id="dashboard-stats">
+        <p>Total Creators: {{creator_count}}</p>
+    </div>
+    <div id="dashboard-stats">
+        <p>Creators in blacklist: {{blacklist_count}}</p>
+    </div>
+    <div id="dashboard-stats">
+        <p>Creators in whitelist: {{whitelist_count}}</p>
+    </div>
+</div>
+    <!--Users stats-->
+<div id="creator-dashboard">
+    <h2>
+        <div id="dashboard-title">
+            <img src="static\users.png" alt="Music Icon" width="50" height="50"> User's Details
+        </div>
+        </h2>
+    <div id="playlist-links">
+        <a href="/users">View all Users</a>
+    </div>
+    <div id="dashboard-stats">
+        <p>Total Users: {{user_count}}</p>
+    </div>
+    <div id="dashboard-stats">
+        <p>Users who have created playlists: {{playlist_user}}</p>
+    </div>
+    <div id="dashboard-stats">
+        <p>Users who have rated songs: {{rating_user}}</p>
+    </div>
+</div>
+
+</div>
+<div id="admin-dashboard">
+    <!--Songs stats-->
+<div id="creator-dashboard">
+    <h2>
+        <div id="dashboard-title">
+            <img src="static\songs.png" alt="Music Icon" width="50" height="50"> Song's Details
+        </div>
+        </h2>
+    <div id="playlist-links">
+        <a href="/songs_page">View all Songs</a>
+    </div>
+    <div id="dashboard-stats">
+        <p>Total Songs: {{song_count}}</p>
+    </div>
+    <div id="dashboard-stats">
+        <p>Average ratings: {{ave_ratings}}</p>
+    </div>
+    <canvas id="songRatingsChart" width="400" height="200"></canvas>
+
+    <script>
+        // Retrieve song data from Flask route
+        var songs = {{ songs | tojson | safe }};
+    
+        // Extract ratings for the chart
+        var ratings = songs.map(function(song) { return song.rating; });
+    
+        // Count the occurrences of each rating within intervals
+        var ratingCounts = {};
+        ratings.forEach(function(rating) {
+            var interval = Math.floor(rating * 2) / 2; 
+            ratingCounts[interval] = (ratingCounts[interval] || 0) + 1;
+        });
+    
+        // Extract unique rating intervals and sort them
+        var uniqueIntervals = Array.from(new Set(Object.keys(ratingCounts))).sort(function(a, b) {
+            return a - b;
+        });
+    
+        // Count of songs for each rating interval
+        var songCounts = uniqueIntervals.map(function(interval) {
+            return ratingCounts[interval] || 0;
+        });
+    
+    
+        // chart using Chart.js
+        var ctx = document.getElementById('songRatingsChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',  
+        data: {
+            labels: uniqueIntervals,
+            datasets: [{
+                label: 'Count of Songs',
+                data: songCounts,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Song Ratings Histogram'
+                },
+                background: {
+                    color: 'rgba(255, 255, 255, 0.5)' 
+                }
+            },
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    beginAtZero: true,
+                    max: 5, 
+                    title: {
+                        display: true,
+                        text: 'Ratings'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Count of Songs'
+                    }
+                }
+            }
+        }
+    });
+</script>
+</div>
+    <!--Albums stats-->
+<div id="creator-dashboard">
+    <h2>
+        <div id="dashboard-title">
+            <img src="static\albums.png" alt="Music Icon" width="50" height="50"> Album's Details
+        </div>
+        </h2>
+    <div id="playlist-links">
+        <a href="/albums_page">View all Albums</a>
+    </div>
+    <div id="dashboard-stats">
+        <p>Total Albums: {{album_count}}</p>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

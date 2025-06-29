@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicTime</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #title-bar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        #container {
+            display: flex;
+            align-items: center;
+        }
+
+        #image {
+            margin-right: 100px; 
+        }
+
+        #listening-message,
+        #sharing-message,
+        #playlists-message,
+        #accessible-message {
+            max-width: 800px; 
+            margin: 30px;
+        }
+        #title-bar h1 {
+            display: flex;
+            align-items: center;
+        }
+        #welcome-message {
+            text-align: center;
+            margin: 20px 0;
+            display: block;
+        }
+        #title-bar img {
+            margin-right: 10px;
+        }
+
+        #login-links {
+            display: flex;
+        }
+
+        #login-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="title-bar">
+    <h1>
+        <img src="static\music-icon.png" alt="Music Icon" width="50" height="50">
+        MusicTime
+    </h1>
+    <div id="login-links">
+        <a href="/login">User Log In</a>
+        <a href="/admin_login">Admin Log In</a>
+    </div>
+</div>
+<div id="welcome-message">
+<h2>
+    Welcome to <img src="static\music-icon.png" alt="Music Icon" width="30" height="30"> MusicTime!!
+    Your ultimate destination for free music sharing and listening...
+</h2>
+</div>
+<div id="container">
+    <img id="image" src="static\home-icon.png" alt="Music Icon" width="500" height="500">
+    <div>
+        <div id="listening-message">
+            🔊 Unlimited Free Listening: Dive into a vast library of songs spanning various genres. From chart-toppers to hidden gems, enjoy unlimited streaming without any cost.
+        </div>
+        <div id="sharing-message">
+            🎤 Share Your Sound: Are you a budding musician? Upload and showcase your tracks effortlessly. Connect with a global audience and receive feedback to fuel your creative journey.
+        </div>
+        <div id="playlists-message">
+            🎵 Curated Playlists: Explore handpicked playlists tailored to suit every mood and occasion. Discover new favorites and revisit timeless classics curated by our passionate community.
+        </div>
+        <div id="accessible-message">
+            🌐 Accessible Anywhere, Anytime: Enjoy the freedom of music wherever you go. Our platform is accessible across devices, allowing you to take your tunes with you on the move.
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

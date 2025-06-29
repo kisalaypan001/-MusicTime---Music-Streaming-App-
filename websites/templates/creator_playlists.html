@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to MusicTime</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #header img {
+            margin-right: 10px;
+        }
+        #search-box {
+            flex: 1;
+            align-items: center;
+            margin-left: 100px;
+        }
+
+        #search-box input {
+            padding: 8px;
+            width: 30%;
+            align-items: center;
+            border: none;
+            border-radius: 5px;
+        }
+        #welcome-message {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #playlist-links {
+            margin-left: 20px;
+            margin: 10px;
+        }
+
+        #playlist-links a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+
+        .song-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            width: 92%;
+            align-content: center;
+            margin: auto    ;
+            border-radius: 20PX;
+        }
+
+        /* Style for each individual block */
+        .song-block {
+            width: 95%; 
+            border: 1px solid #ddd;
+            padding: 40px;
+            margin: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #ddd;
+            border-radius: 10PX;
+        }
+
+        /* Additional styling for the song details */
+        .song-details {
+            font-weight: bold;
+            font-size: larger;
+        }
+        #Artist {
+            font-weight: bold;
+            font-size: medium;
+        }
+        #search-button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logout-links {
+            display: flex;
+        }
+
+        #logout-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+        #play-links {
+            display: flex;
+            text-align: center;
+            margin: 10px;
+            margin-bottom: 5px;
+        }
+
+        #play-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: #333;
+        }
+        #delete-links {
+            display: flex;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        #delete-links a {
+            color: rgb(10, 8, 8);
+            text-decoration: none;
+            padding: 8px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: #a23030;
+        }
+
+        #songs {
+            display:block;
+            text-align: right;
+            margin: 10px;
+            margin-bottom: 5px;
+        }
+
+        #songs a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: #333;
+        }
+        #pro-img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            border-radius: 30px;
+            
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Bootstrap JS (Popper.js and jQuery are also required) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div id="header">
+    <h1>
+        <img src="static\music-icon.png" alt="Music Icon" width="30" height="30">
+        <span>MusicTime</span>
+    </h1>
+    <div id="search-box">
+        <form action="/search" method="post">
+            <label for="query">Search:</label>
+            <input type="text" id="query" placeholder="Songs, Albums or Artists..." name="query" required>
+            <button type="submit" id="search-button">Search</button>
+        </form>
+    </div>
+    {{current_user.full_name}}
+    <div id="logout-links">
+    <a href="/logout">Log Out</a>
+    </div>
+    <div id="logout-links">
+    <a href="/creator_login">Log in as Creator</a>
+
+    </div>
+</div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        {% if category == 'error' %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% else %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {%endif%}
+    {%endfor%}
+{%endif%}
+{%endwith%}
+<div id="welcome-message">
+    <h2>
+        Welcome {{current_user.full_name}}. Here is your all playlists.
+    </h2>
+    <div id="playlist-links">
+        <a href="/creator_page">Back to creator_dashboard</a>
+        <a href="/create_playlist_creator">Create Playlist</a>
+        <a href="/songs">View all songs!</a>
+    </div>
+</div>
+<div id="songs-menu">
+    <div class="songs-list">
+        <h2>Your playlists:</h2>
+        <div class="song-container">
+            {% for playlist in playlists %}
+            <div class="song-block">
+                <div class="song-details">{{ playlist.name }}</div>
+                <div id="play-links">
+                <a href="{{ url_for('auth.open_playlist', playlist_id=playlist.id) }}">View Playlist</a></div>
+                <div id="delete-links">
+                    <a href="{{ url_for('auth.del_playlist_creator', playlist_id=playlist.id) }}">Delete Playlist</a></div>
+            </div>
+            {% endfor %}
+
+        </div>
+        </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

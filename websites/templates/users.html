@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicTime All Creators</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #header img {
+            margin-right: 10px;
+        }
+        #search-box {
+            flex: 1;
+            align-items: center;
+            margin-left: 100px;
+        }
+
+        #search-box input {
+            padding: 8px;
+            width: 30%;
+            align-items: center;
+            border: none;
+            border-radius: 5px;
+        }
+        #welcome-message {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #playlist-links {
+            margin-left: 20px;
+        }
+
+        #playlist-links a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+
+        #songs-menu {
+            display:block;
+            align-items: center;
+            margin: 20px;
+            background-color: rgb(242, 237, 237);
+            border-radius: 10px;
+            align-content: center;
+            text-align: left;
+            width:75% ;
+            align-self:center;
+        }
+
+        .songs-list {
+            flex: 1;
+        }
+
+        .songs-list h3 {
+            color: #333;
+        }
+
+        .songs-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .songs-list li {
+            margin-bottom: 10px;
+        }
+
+        #search-button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logout-links {
+            display: flex;
+        }
+
+        #logout-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+
+
+        .song-container {
+            display: flex;
+            justify-content: space-between;
+            width: 92%;
+            align-content: center;
+            margin: auto    ;
+            border-radius: 10PX;
+        }
+
+        /* Style for each individual block */
+        .song-block {
+            padding: 10px;
+            margin: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        /* Additional styling for the song details */
+        .song-details {
+            font-weight: bold;
+            font-size: larger;
+            display: inline-block;
+            margin: 10px;
+        }
+        #Artist {
+            font-weight: bold;
+            font-size: medium;
+            display: inline-block;
+            margin: 10px;
+            justify-content: space-between;
+            text-align: center;
+        }
+        #play-links {
+            display: flex;
+            text-align: center;
+            margin: 10px;
+            margin-bottom: 5px;
+        }
+
+        #play-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: rgb(30, 148, 79);
+        }
+
+        #Blacklist-links {
+            display: flex;
+            text-align: center;
+            margin: 10px;
+            margin-bottom: 5px;
+        }
+
+        #Blacklist-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border: 1px solid rgb(17, 15, 15);
+            border-radius: 5px;
+            background-color: #c31919;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <h1>
+        <img src="static\music-icon.png" alt="Music Icon" width="30" height="30">
+        <span>MusicTime</span>
+    </h1>
+    <div id="search-box">
+        <form action="/search" method="post">
+            <label for="query">Search:</label>
+            <input type="text" id="query" placeholder="Songs, Albums or Artists..." name="query" required>
+            <button type="submit" id="search-button">Search</button>
+        </form>
+    </div>
+    {{current_user.full_name}}
+    <div id="logout-links">
+    <a href="/logout">Log Out</a>
+    </div>
+</div>
+
+<div id="welcome-message">
+    <h2>
+        Welcome {{current_user.full_name}}
+        Here is the list of all Users
+    </h2>
+    <div id="playlist-links">
+        <a href="/admin_page">Back to Admin dashboard</a>
+    </div>
+</div>
+<div id="songs-menu">
+    <h1>All Users</h1>
+    <ul>
+        {% for user in users %}
+            <div class="song-block">
+            <div class="song-details">Full Name: {{ user[3] }}</div>
+            <div class="song-details">Email: {{ user[1] }}</div></div>
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>MusicTime All Songs</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #header img {
+            margin-right: 10px;
+        }
+        #search-box {
+            flex: 1;
+            align-items: center;
+            margin-left: 100px;
+        }
+
+        #search-box input {
+            padding: 8px;
+            width: 30%;
+            align-items: center;
+            border: none;
+            border-radius: 5px;
+        }
+        #welcome-message {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #playlist-links {
+            margin-left: 20px;
+        }
+
+        #playlist-links a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+
+        #songs-menu {
+            display: flex;
+            gap: 20px;
+            text-align: center;
+            align-self: center;
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }
+
+        .songs-list {
+            flex: 1;
+        }
+
+        .songs-list h3 {
+            color: #333;
+        }
+
+        .songs-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .songs-list li {
+            margin-bottom: 10px;
+        }
+
+        #search-button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logout-links {
+            display: flex;
+        }
+
+        #logout-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+
+
+        .song-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            width: 100%;
+            align-content: center;
+            margin: auto    ;
+            border-radius: 20PX;
+        }
+
+        /* Style for each individual block */
+        .song-block {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #ddd;
+            border-radius: 10PX;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+
+        /* Additional styling for the song details */
+        .song-details {
+            font-weight: bold;
+            font-size: larger;
+            display: inline-block;
+            margin: 10px;
+        }
+        #Artist {
+            font-weight: bold;
+            font-size: medium;
+            display: inline-block;
+            margin: 10px;
+            justify-content: space-between;
+            text-align: center;
+        }
+        #play-links {
+            display: flex;
+            text-align: center;
+            margin: 10px;
+            margin-bottom: 5px;
+        }
+
+        #play-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <h1>
+        <img src="static\music-icon.png" alt="Music Icon" width="30" height="30">
+        <span>MusicTime</span>
+    </h1>
+    <div id="search-box">
+        <form action="/search" method="post">
+            <label for="query">Search:</label>
+            <input type="text" id="query" placeholder="Songs, Albums or Artists..." name="query" required>
+            <button type="submit" id="search-button">Search</button>
+        </form>
+    </div>
+    {{current_user.full_name}}
+    <div id="logout-links">
+    <a href="/logout">Log Out</a>
+    </div>
+</div>
+
+<div id="welcome-message">
+    <h2>
+        Edit Existing Songs here.
+    </h2>
+    <div id="playlist-links">
+        <a href="/creator_page">Back to Creator's Dashboard</a>
+    </div>
+</div>
+
+<div id="songs-menu">
+    <h1>All Songs List</h1></div>
+    {% block content %}
+    <ul>
+        {% for song in songs %}
+            <div class="song-block">
+            <div class="song-details">{{ song[1] }}</div>
+            <div class="Artist">  By {{ song[2] }}</div>
+            <div class="Artist">  Genre: {{ song[3] }}</div>
+            <div class="Artist">  Duration: {{ song[4] }}</div>
+            <div class="Artist">  
+                {% if song.ratings %}
+                Rating: {{
+                    (song.ratings | map(attribute='rating') | sum / song.ratings | length) | round(2)
+                }}
+            {% else %}
+                No ratings yet.
+            {% endif %}
+
+                
+            </div>
+            <div id="play-links">
+                <a href="{{ url_for('auth.edit_song', song_id=song[0]) }}">Edit Song</a></div>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                    Delete Song
+                  </button>
+                  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Are you sure you want to delete the song "{{ song.name }}"?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          <form method="post" action="{{ url_for('auth.delete_song', song_id=song[0]) }}">
+                            <button type="submit" class="btn btn-danger">Yes, delete it</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        {% endfor %}
+    </ul>
+</div>
+<script>
+    // JavaScript to open the modal when the delete button is clicked
+    document.getElementById('deleteModalButton').addEventListener('click', function () {
+      $('#deleteModal').modal('show');
+    });
+  </script>
+{% endblock %}
+</body>
+</html>

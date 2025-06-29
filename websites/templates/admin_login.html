@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        MusicTime - User Login</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: block;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #title-bar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #title-bar h1 {
+            display: flex;
+            align-items: center;
+        }
+
+        #title-bar img {
+            margin-right: 10px;
+        }
+
+        #login-links {
+            display: flex;
+        }
+
+        #login-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+        #login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #login-container h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        #login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+            align-items: center;
+            align-self: center;
+        }
+
+        #login-form label {
+            font-weight: bold;
+        }
+
+        #login-form input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 500px;
+        }
+
+        #login-button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 500px;
+            align-items: center;
+        }
+
+        #signup-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        #signup-link a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Bootstrap JS (Popper.js and jQuery are also required) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="title-bar">
+    <h1>
+        <img src="static\music-icon.png" alt="Music Icon" width="50" height="50">
+        MusicTime
+    </h1>
+    <div id="login-links">
+        <a href="/signup">User Sign Up</a>
+        <a href="/admin_login">Admin Log In</a>
+    </div>
+</div>
+<div id="login-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        {% if category == 'error' %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% else %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {%endif%}
+        {%endfor%}
+    {%endif%}
+    {%endwith%}
+
+    <h2>
+        <img src="static\music-icon.png" alt="Music Icon" width="30" height="30">
+        MusicTime - Admin Login</h2>
+    <form method="POST" id="login-form">
+        <label for="email">Username:</label>
+        <input type="text" id="email" name="email" placeholder="Enter your email here" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter password" required>
+
+        <button type="submit" id="login-button">Log In</button>
+    </form>
+</div>
+
+</body>
+</html>

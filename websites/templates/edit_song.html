@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add songs to MusicTime</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #header img {
+            margin-right: 10px;
+        }
+        #search-box {
+            flex: 1;
+            align-items: center;
+            margin-left: 100px;
+            text-align: center;
+        }
+
+        #search-box input {
+            padding: 8px;
+            width: 40%;
+            align-items: center;
+            border: none;
+            border-radius: 5px;
+        }
+        #welcome-message {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #playlist-links {
+            margin-left: 20px;
+        }
+
+        #playlist-links a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+        #creator-dashboard {
+            display: inline;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: rgb(214, 206, 206);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            align-content: center;
+            text-align: center;
+        }
+
+        #dashboard-links {
+            align-content: center;
+            align-items: center;
+        }
+        #dashboard-title{
+            text-align: center;
+            margin: 20px 0;
+        }
+        #dashboard-links a {
+            margin-left: 20px;
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+
+        #dashboard-stats {
+            align-items: center;
+            text-align: center;
+            padding: 50px;
+            margin: 20px;
+            display: inline-block;
+            border: 1px solid #333;
+            border-radius: 10px;
+        }
+        #songs-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .songs-list {
+            flex: 1;
+        }
+
+        .songs-list h3 {
+            color: #333;
+        }
+
+        .songs-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .songs-list li {
+            margin-bottom: 10px;
+        }
+
+        #search-button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logout-links {
+            display: flex;
+            margin: 5px;
+        }
+
+        #logout-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+        #upload-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #upload-container h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        #upload-form {
+            display: flex;
+            flex-direction: column;
+            align-items:center;
+            text-align:justify;
+            border-radius: 10px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <h1>
+        <img src="\static\music-icon.png" alt="Music Icon" width="50" height="50">
+        <span>MusicTime</span>
+    </h1>
+    <div id="search-box">
+        <form action="/search" method="post">
+            <label for="query">Search:</label>
+            <input type="text" id="query" placeholder="Songs, Albums or Artists..." name="query" required>
+            <button type="submit" id="search-button">Search</button>
+        </form>
+    </div>
+    {{current_user.full_name}}
+    <div id="logout-links">
+    <a href="/logout">Log Out</a>
+    </div>
+</div>
+<a href="/creator_page">Back to Creator's Dashboard</a>
+<div id="upload-container">
+<div id="upload-container-h2">
+</div>
+<h2>Edit Song</h2>
+<form method="post" action="{{ url_for('auth.edit_song', song_id=song.id) }}" id="edit-form" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  
+  <label for="song_name">Song Name:</label>
+  {{ form.name() }}<br>
+
+  <label for="lyrics">Lyrics:</label>
+  {{ form.lyrics() }}<br>
+
+  <label for="duration">Duration (seconds):</label>
+  {{ form.duration() }}<br>
+
+  <label for="day_created">Date Created:</label>
+  {{ form.date_created() }}<br>
+
+  <label for="album">Select Album:</label>
+  {{ form.album() }}<br>
+
+
+<div id="logout-links">
+    <input type="submit" value="Save changes">
+</div>
+</form>
+</div>
+</div>
+</div>
+
+</body>
+</html>

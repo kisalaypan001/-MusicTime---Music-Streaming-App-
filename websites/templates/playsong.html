@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicTime play Songs</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #header img {
+            margin-right: 10px;
+        }
+        #search-box {
+            flex: 1;
+            align-items: center;
+            margin-left: 100px;
+        }
+
+        #search-box input {
+            padding: 8px;
+            width: 30%;
+            align-items: center;
+            border: none;
+            border-radius: 5px;
+        }
+        #welcome-message {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #playlist-links {
+            margin-left: 20px;
+        }
+
+        #playlist-links a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+
+        #songs-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .songs-list {
+            flex: 1;
+        }
+
+        .songs-list h3 {
+            color: #333;
+        }
+
+        .songs-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .songs-list li {
+            margin-bottom: 10px;
+        }
+
+        #search-button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logout-links {
+            display: flex;
+        }
+
+        #logout-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+
+
+        .song-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            width: 92%;
+            align-content: center;
+            margin: auto    ;
+            border-radius: 20PX;
+        }
+
+        /* Style for each individual block */
+        .song-block {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #ddd;
+            border-radius: 10PX;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+
+        /* Additional styling for the song details */
+        .song-details {
+            font-weight: bold;
+            font-size: larger;
+            display: inline-block;
+            margin: 10px;
+        }
+        #Artist {
+            font-weight: bold;
+            font-size: medium;
+            display: inline-block;
+            margin: 10px;
+            justify-content: space-between;
+            align-self: center;
+        }
+        #lyrics_block {
+            font-size: medium;
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            align-items:center;
+            align-self: center;
+            align-content: center;
+            margin: 50px;
+        }
+        #play-links {
+            display: flex;
+            text-align: center;
+            margin: 10px;
+            margin-bottom: 5px;
+        }
+
+        #play-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: #333;
+        }
+        .song-detail {
+            width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .rating-section, .lyrics-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .average-rating {
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .lyrics-content {
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        audio {
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <h1>
+        <img src="/static/music-icon.png" alt="Music Icon" width="40" height="40">
+        <span>MusicTime</span>
+    </h1>
+    <div id="search-box">
+        <form action="/search" method="post">
+            <label for="query">Search:</label>
+            <input type="text" id="query" placeholder="Songs, Albums or Artists..." name="query" required>
+            <button type="submit" id="search-button">Search</button>
+        </form>
+    </div>
+    {{current_user.full_name}}
+    <div id="logout-links">
+    <a href="/logout">Log Out</a>
+    </div>
+</div>
+
+<div id="welcome-message">
+    <h2>
+        Welcome {{current_user.full_name}}
+        Listen to your favorite music here.
+    </h2>
+    <div id="playlist-links">
+        <a href="/user_page">Back to User page</a>
+        <a href="/songs">View All Songs</a>
+    </div>
+</div>
+
+<div class="container">
+    <h1 class="my-4 text-center">Play Songs</h1>
+    <div class="row justify-content-center">
+        <div class="song-block">
+            <div class="song-details">{{ song.name }}</div>
+            <div class="Artist">By {{ song.artist }}</div>
+            <div class="Artist">Duration: {{ song.duration }}</div>
+            <div class="Artist">                    
+                {% if song.ratings %}
+                Average Rating: {{
+                    (song.ratings | map(attribute='rating') | sum / song.ratings | length) | round(2)
+                }}
+            {% else %}
+                No ratings yet.
+            {% endif %}
+        </div></div>
+        </div></div></div>
+        <div class="song-detail">
+            <audio controls>
+                <source src="\{{song.file}}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        
+            <div class="rating-section">
+                <h3>Rate this Song:</h3>
+                <form action="{{ url_for('auth.rate', song_id=song.id) }}" method="post">
+                    <input type="hidden" name="user_id" value="{{ current_user.id }}">
+                    <label for="rating">Rate (1-5):</label>
+                    <input type="number" name="rating" min="1" max="5" required>
+                    <button type="submit">Submit Rating</button>
+                </form>
+        
+                <div class="average-rating">
+                    {% if song.ratings %}
+                        Average Rating: {{
+                            (song.ratings | map(attribute='rating') | sum / song.ratings | length) | round(2)
+                        }}
+                    {% else %}
+                        No ratings yet.
+                    {% endif %}
+                </div>
+            </div>
+        
+            <div class="lyrics-section">
+                <h3>Lyrics:</h3>
+                <div class="lyrics-content">
+                    {{ song.lyrics }}
+                </div>
+            </div>
+        </div>
+  
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to MusicTime</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #header img {
+            margin-right: 10px;
+        }
+        #search-box {
+            flex: 1;
+            align-items: center;
+            margin-left: 100px;
+            text-align: center;
+        }
+
+        #search-box input {
+            padding: 8px;
+            width: 40%;
+            align-items: center;
+            border: none;
+            border-radius: 5px;
+        }
+        #welcome-message {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #playlist-links {
+            margin-left: 20px;
+        }
+
+        #playlist-links a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+        #creator-dashboard {
+            display: inline;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: rgb(214, 206, 206);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            align-content: center;
+            text-align: center;
+        }
+
+        #dashboard-links {
+            align-content: center;
+            align-items: center;
+        }
+        #dashboard-title{
+            text-align: center;
+            margin: 20px 0;
+        }
+        #dashboard-links a {
+            margin-left: 20px;
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+
+        #dashboard-stats {
+            align-items: center;
+            text-align: center;
+            padding: 50px;
+            margin: 20px;
+            display: inline-block;
+            border: 1px solid #333;
+            border-radius: 10px;
+        }
+        #songs-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .songs-list {
+            flex: 1;
+        }
+
+        .songs-list h3 {
+            color: #333;
+        }
+
+        .songs-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .songs-list li {
+            margin-bottom: 10px;
+        }
+
+        #search-button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logout-links {
+            display: flex;
+            margin: 5px;
+        }
+
+        #logout-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+        
+        .song-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            width: 92%;
+            align-content: center;
+            margin: auto    ;
+            border-radius: 20PX;
+        }
+
+        /* Style for each individual block */
+        .song-block {
+            width: 95%; 
+            border: 1px solid #ddd;
+            padding: 40px;
+            margin: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #ddd;
+            border-radius: 10PX;
+        }
+
+        /* Additional styling for the song details */
+        .song-details {
+            font-weight: bold;
+            font-size: larger;
+        }
+        #Artist {
+            font-weight: bold;
+            font-size: medium;
+        }
+
+        #play-links {
+            display: flex;
+            text-align: center;
+            margin: 10px;
+            margin-bottom: 5px;
+        }
+
+        #play-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: #333;
+        }
+        #songs {
+            display:block;
+            text-align: right;
+            margin: 10px;
+            margin-bottom: 5px;
+        }
+
+        #songs a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <h1>
+        <img src="static\music-icon.png" alt="Music Icon" width="50" height="50">
+        <span>MusicTime</span>
+    </h1>
+    <div id="search-box">
+        <form action="/search" method="post">
+            <label for="query">Search:</label>
+            <input type="text" id="query" placeholder="Songs, Albums or Artists..." name="query" required>
+            <button type="submit" id="search-button">Search</button>
+        </form>
+    </div>
+    {{current_user.full_name}}
+    <div id="logout-links">
+    <a href="/logout">Log Out</a>
+    </div>
+</div>
+
+<div id="welcome-message">
+    <h2>
+        Welcome to <img src="static\music-icon.png" alt="Music Icon" width="30" height="30"> MusicTime.
+        Listen to your favorite music here.
+    </h2>
+    <div id="playlist-links">
+        <a href="{{ url_for('auth.creator_playlists',user_id=current_user.id) }}">My Playlists</a>
+        <a href="/create_playlist_creator">Create Playlist</a>
+        <a href="/songs">View all songs!</a>
+    </div>
+</div>
+
+
+<div id="songs-menu">
+    <div class="songs-list">
+        <h1>Latest Songs and Albums</h1>
+        <h2>New added Songs:</h2>
+        <div class="song-container">
+            <!-- First Song Block -->
+            {% for song in new_songs %}
+            <div class="song-block">
+                <div class="song-details">{{ song.name }}</div>
+                <div class="Artist"> By {{ song.artist }}</div>
+                <div class="Artist">
+                    {% if song.ratings %}
+                    Rating: {{
+                        (song.ratings | map(attribute='rating') | sum / song.ratings | length) | round(2)
+                    }}
+                {% else %}
+                    No ratings yet.
+                {% endif %}
+                </div>
+                <div id="play-links"><a href="/playsong/{{ song.id }}">Play Song</a></div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <h2>Songs with High Rating:</h2>
+        <div class="song-container">
+            <!-- First Song Block -->
+            {% for song in songs %}
+            <div class="song-block">
+                <div class="song-details">{{ song.name }}</div>
+                <div class="Artist">By {{ song.artist }}</div>
+                <div class="Artist">Rating:{{(song.ratings | map(attribute='rating') | sum / song.ratings | length) | round(2)}}</div>
+                <div id="play-links"><a href="/playsong/{{ song.id }}">Play Song</a></div>
+            </div>
+            {% endfor %}
+        </div>
+        <h2>New added Albums:</h2>
+        <div class="song-container">
+        {% for album in new_albums %}
+            <div class="song-block">
+            <div class="song-details">{{ album.name }}</div>
+            <div class="Artist">  By {{ album.artist }}</div>
+            <div class="Artist">  Genre: {{ album.genre }}</div>
+            <div class="Artist">  Day Created: {{ album.date_created }}</div>
+            <div id="play-links">
+                <a href="{{ url_for('auth.open_album', album_id=album.id) }}">View Album</a></div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+<div id="creator-dashboard">
+    <h2>
+    <div id="dashboard-title">
+        <img src="static\creator_logo.png" alt="Music Icon" width="50" height="50"> Creator's Dashboard
+    </div>
+    </h2>
+    <div id="playlist-links">
+        <a href="/add_song">Upload Songs</a>
+        <a href="/edit_songs">Edit a existing Songs</a>
+        <a href="/create_album">Create Album</a>
+        <a href="/edit_albums">Edit a existing Album</a>
+    </div>
+    <div id="dashboard-stats">
+        <p>Total Songs: {{song_count}}</p>
+    </div>
+    <div id="dashboard-stats">
+        <p>Average Ratings: {{ave_ratings |round(2)}}</p>
+    </div>
+    <div id="dashboard-stats">
+        <p>Total Albums: {{album_count}} </p>
+    </div>
+
+</div>
+
+</body>
+</html>
